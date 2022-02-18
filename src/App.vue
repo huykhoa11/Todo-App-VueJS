@@ -17,6 +17,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Task</th>
+            <th scope="col">Status</th>
             <th scope="col"></th>
             <th scope="col"></th>
           </tr>
@@ -24,7 +25,10 @@
         <tbody>
           <tr v-for="(item, index) in items" :key="item">
             <td>{{ index+1 }}</td>
-            <td>{{ item }}</td>
+            <td :class="{'activee': itemsStatus[index] === true}">{{ item }} </td>
+            <td>
+              <input type="checkbox" class="form-check-input" @click="checkProgress(index)">
+            </td>
             <td><button class="btn btn btn-secondary" type="button" id="button-addon2" @click="editTask(item, index)">Edit</button></td>
             <td><button class="btn btn btn-danger" type="button" id="button-addon2" @click="deleteTask(index)">Delete</button></td>
           </tr>
@@ -50,9 +54,14 @@ export default ({
       editStatus: false,
       tmp: "",
       name: "",
+      isActive: false,
       items : [
         "Go Running",  "Pratice drawing"
       ],
+      itemsStatus: [
+        false, false
+      ],
+
     }
   },
   methods: {
@@ -61,6 +70,7 @@ export default ({
       else {
         this.items.push(this.name);
         this.name = "";
+        this.itemsStatus.push(false);
       }
     },
 
@@ -77,9 +87,22 @@ export default ({
 
     deleteTask: function(index) {
       this.items.splice(index, 1);
-    }
+    },
 
-
+    checkProgress: function(index) {
+      if (this.itemsStatus[index] == false) {
+        this.itemsStatus[index] = true;
+        this.isActive = true;
+        console.log(this.itemsStatus);
+      }
+        
+      else {
+        this.itemsStatus[index] = false;
+        this.isActive = false;
+        console.log(this.itemsStatus);
+      }
+        
+    },
   }
 });
 </script>
@@ -91,5 +114,9 @@ export default ({
 
 #app {
   margin-top: 20px;
+}
+
+.activee {
+  text-decoration: line-through;
 }
 </style>
